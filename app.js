@@ -17,6 +17,13 @@ function start(){
 function updateGueesesDisplay(){
     document.getElementById("numberOfGuesses").innerHTML=guessesLeft;
 }
+function clearCheckedLetters(){
+    for(const key in usedLetters){
+        delete usedLetters[key];
+        updateCheckedLetters();
+    }
+
+}
 function setNewWord(){
     const wordContainer=document.getElementById("word");
     for(let i=0;i<currentWord.length;i++){
@@ -83,6 +90,10 @@ function finishGame(state){
     document.getElementById('input').setAttribute("disabled",'true');
     document.removeEventListener('keydown',handleKeyDown);
     document.querySelectorAll("#word span").forEach(span=>span.classList.add(state))
+    if(state==='lose'){
+        document.querySelectorAll('span.char').forEach(span=>span.innerHTML=span.getAttribute('value'))
+    }
+
 }
 function clearInput(){
     const input=document.getElementById("input");
@@ -104,6 +115,7 @@ function newGame(){
     document.querySelectorAll(".lose").forEach(span=>span.classList.remove("lose"));
     document.addEventListener("keydown",handleKeyDown);
     document.getElementById("word").innerHTML='';
+    clearCheckedLetters();
     start();
 }
 init();
